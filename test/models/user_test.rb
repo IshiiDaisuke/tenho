@@ -31,6 +31,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+
   test "email validation should accept valid addresses" do
     valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org
                          first.last@foo.jp alice+bob@baz.cn]
@@ -74,5 +75,12 @@ class UserTest < ActiveSupport::TestCase
    end
    test "authenticated? should return false for a user with nil digest" do
      assert_not @user.authenticated?(:remember, '')
+   end
+   test "associated microposts should be destroyed" do
+     @user.save
+     @user.microposts.create!(content: "Lorem ipsum")
+     assert_difference 'Micropost.count', -1 do
+       @user.destroy
+     end
    end
  end
