@@ -1,24 +1,16 @@
-# README
+# review_sns
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A new Flutter application.
 
-Things you may want to cover:
+## Getting Started
 
-* Ruby version
+This project is a starting point for a Flutter application.
 
-* System dependencies
+A few resources to get you started if this is your first Flutter project:
 
-* Configuration
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
