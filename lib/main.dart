@@ -46,11 +46,18 @@ class FirstScreen  extends State<MyFirstScreen>{
           return Card(
             child: Column(
               children: <Widget>[
-                Image.asset("assets/IMG_0755.JPG"),
-                Container(
+                Image.asset("assets/IMG_0755.JPG",
+                  height: 250.0,
+                  width: 250.0,
+                ),
+               // _titleArea(),
+              // _reviewArea()
+
+
+               Container(
                   margin: EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text("assets/IMG_0755.JPG"),
+                    title: Text("商品名"),
                     leading: Icon(Icons.person),
                     subtitle: Text("サブタイトル"),
                   )),
@@ -60,6 +67,9 @@ class FirstScreen  extends State<MyFirstScreen>{
           );
         }),
       ),
+
+
+
 
       floatingActionButton: FloatingActionButton(
         onPressed: (){
@@ -97,6 +107,25 @@ class FirstScreen  extends State<MyFirstScreen>{
 
 
 
+/*Widget _titleArea(){
+  return Expanded(
+    child: Container(
+      margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      child: Text("商品名など"),
+    ),
+  );
+}
+
+Widget _reviewArea(){
+  return Expanded(
+    child: Container(
+      margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      child: Text("商品説明"),
+    ),
+  );
+}*/
+
+
 
 
 //投稿画面
@@ -107,10 +136,13 @@ class MyReview extends StatefulWidget{
 }
 
 class Review extends State<MyReview> {
+  //final _textEditingController = TextEditingController();
   final _textEditingControllerItem = TextEditingController();
   final _textEditingControllerBrand = TextEditingController();
   final _textEditingControllerReview = TextEditingController();
-  int _maxLines;
+  int _maxLinesItem;
+  int _maxLinesBrand;
+  int _maxLinesReview;
   File _image;
 
   Future getImagegallery() async{
@@ -152,10 +184,7 @@ class Review extends State<MyReview> {
       );
 
   }
-
-
-
-
+  
 
   void buttonPressed() {
     setState(() {
@@ -164,18 +193,45 @@ class Review extends State<MyReview> {
       );
     });
   }
+  
+  
+  @override 
+  void initState(){
+    super.initState();
+    _textEditingControllerItem.addListener(_textEditListenerItem);
+    _textEditingControllerBrand.addListener(_textEditListenerBrand);
+    _textEditingControllerReview.addListener(_textEditListenerReview);
+  }
 
   @override
   void dispose(){
-    _textEditingControllerItem.removeListener(_textEditListener);
+    _textEditingControllerItem.removeListener(_textEditListenerItem);
     _textEditingControllerItem.dispose();
+    _textEditingControllerBrand.removeListener(_textEditListenerBrand);
+    _textEditingControllerBrand.dispose();
+    _textEditingControllerReview.removeListener(_textEditListenerReview);
+    _textEditingControllerReview.dispose();
     super.dispose();
   }
 
 
-  void _textEditListener(){
+
+
+  void _textEditListenerItem(){
     setState(() {
-      _maxLines = null;
+      _maxLinesItem = '\n'.allMatches(_textEditingControllerItem.text).length >= 2 ? 3 : null;
+    });
+  }
+
+  void _textEditListenerBrand(){
+    setState(() {
+      _maxLinesBrand = '\n'.allMatches(_textEditingControllerBrand.text).length >= 2 ? 3 : null;
+    });
+  }
+
+  void _textEditListenerReview(){
+    setState(() {
+      _maxLinesReview = '\n'.allMatches(_textEditingControllerReview.text).length >= 8 ? 9 : null;
     });
   }
 
@@ -208,6 +264,7 @@ class Review extends State<MyReview> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
 
+
             _image == null
                 ? RaisedButton.icon (
               icon: Icon(
@@ -219,9 +276,13 @@ class Review extends State<MyReview> {
               color: Colors.blue,
               textColor: Colors.white,
             )
-                : Image.file(_image),
+                : Image.file(_image,
+              height: 250.0,
+              width: 250.0,
+            ),
             _titleArea(),
             _reviewArea()
+
           ],
         ),
       ),
@@ -248,11 +309,12 @@ class Review extends State<MyReview> {
                           Padding(
                             padding: EdgeInsets.all(2.0),
                             child: new TextFormField(
+                              maxLength: 25,
                               controller: _textEditingControllerItem,
                               decoration: const InputDecoration(
                                 hintText: '商品名',
                               ),
-                              maxLines: _maxLines,
+                              maxLines: _maxLinesItem,
                               keyboardType: TextInputType.multiline,
                               textInputAction: TextInputAction.newline,
                             ),
@@ -275,11 +337,12 @@ class Review extends State<MyReview> {
                                   Padding(
                                     padding: EdgeInsets.all(2.0),
                                     child: new TextFormField(
+                                      maxLength: 25,
                                       controller: _textEditingControllerBrand,
                                       decoration: const InputDecoration(
                                         hintText: 'ブランド、出版社など',
                                       ),
-                                      maxLines: _maxLines,
+                                      maxLines: _maxLinesBrand,
                                       keyboardType: TextInputType.multiline,
                                       textInputAction: TextInputAction.newline,
                                     ),
@@ -315,11 +378,12 @@ class Review extends State<MyReview> {
             Padding(
               padding: EdgeInsets.all(2.0),
               child: new TextFormField(
+                maxLength: 150,
                 controller: _textEditingControllerReview,
                 decoration: const InputDecoration(
                   hintText: '商品説明',
                 ),
-                maxLines: _maxLines,
+                maxLines: _maxLinesReview,
                 keyboardType: TextInputType.multiline,
                 textInputAction: TextInputAction.newline,
               ),
@@ -425,7 +489,10 @@ class DetailPage extends State<MyDetailPage>{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/IMG_0755.JPG'),
+            Image.asset('assets/IMG_0755.JPG',
+              height: 250.0,
+              width: 250.0,
+            ),
             _buttonArea(),
             _titleArea(),
             _reviewArea()
