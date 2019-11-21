@@ -407,38 +407,39 @@ class MySecondScreen extends StatefulWidget{
 }
 
 
-class SecondScreen extends State<MySecondScreen>{
+class SecondScreen extends State<MySecondScreen> {
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('一覧画面'),
       ),
       body: GridView.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
-            childAspectRatio: 0.7,
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(4.0),
-            children: List.generate(100,(index){
-              return InkWell(
-                onTap: (){
-                  Navigator.push(
-                    context,MaterialPageRoute(builder: (context) => MyDetailPage()),
-                  );
-                },
-             child: Column(
-                children: <Widget>[
-                  Image.asset("assets/IMG_0755.JPG"),
-                ],
-              ),
-
+        crossAxisCount: 2,
+        mainAxisSpacing: 10.0,
+        crossAxisSpacing: 10.0,
+        childAspectRatio: 0.7,
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(4.0),
+        children: List.generate(100, (index) {
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyDetailPage()),
               );
-            }),
-    ),
+            },
+            child: Column(
+              children: <Widget>[
+                Image.asset("assets/IMG_0755.JPG"),
+              ],
+            ),
+
+          );
+        }),
+      ),
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
@@ -452,13 +453,13 @@ class SecondScreen extends State<MySecondScreen>{
             icon: Icon(Icons.view_module),
           ),
         ],
-        onTap: (int value){
+        onTap: (int value) {
           if (value == 0)
             Navigator.pop(
                 context);
         },
       ),
-      );
+    );
   }
 
 
@@ -477,6 +478,8 @@ class MyDetailPage extends StatefulWidget{
 }
 
 class DetailPage extends State<MyDetailPage>{
+
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -502,35 +505,39 @@ class DetailPage extends State<MyDetailPage>{
     );
   }
   Widget _buttonArea(){
-    bool _favorite;
+    bool favorite;
     return Container(
       margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      child:  Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
+    //  child:  Row(
+    //    crossAxisAlignment: CrossAxisAlignment.start,
+      //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: //<Widget>[
           FlatButton(
             child: Icon(
-              _favorite == true ? Icons.favorite : Icons.favorite_border,
-              color: _favorite == true ? Colors.red : Colors.black38,
+              favorite == true ? Icons.favorite : Icons.favorite_border,
+              color: favorite == true ? Colors.red : Colors.black38,
             ),
             onPressed: (){
               setState(() {
-                if (_favorite = true){
-                  _favorite = false;
-                }else{
-                  _favorite = true;
+                if (favorite != true) {
+                  //ハートが押されたときにfavoriteにtrueを代入している
+                  favorite = true;
+                } else {
+                  favorite = false;
                 }
               });
             },
           ),
+
+
+
          /* _buildButtonColumn(Icons.favorite_border, "いいね"),
           _buildButtonColumn(Icons.cached, "共有"),
           _buildButtonColumn(Icons.chat_bubble_outline, "コメント"),
           _buildButtonColumn(Icons.bookmark_border, "保存"),*/
-        ],
-      ),
-    );
+        //],
+      );
+   // );
   }
 
 
