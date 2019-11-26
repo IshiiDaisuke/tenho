@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
 
 
-//マイ投稿一覧画面
+//投稿一覧画面
 class MyFirstScreen extends StatefulWidget{
 
   @override
@@ -34,11 +34,61 @@ class MyFirstScreen extends StatefulWidget{
 }
 
 class FirstScreen  extends State<MyFirstScreen>{
+
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('マイ投稿一覧'),
+        title: //Image.asset("assets/IMG_1123.JPG",
+         // height: 250.0,
+          //width: 250.0,
+      //)
+        Text('Ishara',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 30.0
+          ),
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(2.0),
+                    child:  Text('ユーザー名'),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.0),
+                    child:  Text('フォロー数'),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.0),
+                    child:  Text('フォロワー数'),
+                  ),
+                ],
+
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+            ),
+            ListTile(
+              title:  Text('プロフィール'),
+              onTap: (){
+                  Navigator.push(
+                    context,MaterialPageRoute(builder: (context) => MyProfile()),
+                  );
+              },
+            )
+          ],
+        ),
       ),
 
       body:ListView(
@@ -50,17 +100,38 @@ class FirstScreen  extends State<MyFirstScreen>{
                   height: 250.0,
                   width: 250.0,
                 ),
-               // _titleArea(),
-              // _reviewArea()
-
 
                Container(
                   margin: EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text("商品名"),
+                    title: Text('商品名',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0
+                      ),
+                    ),
                     leading: Icon(Icons.person),
-                    subtitle: Text("サブタイトル"),
                   )),
+                Container(
+                  child: Text(
+                    'ブランド、出版社など',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0
+                    ),
+                  ),
+                ),
+
+            Container(
+            child: Text(
+            '商品説明',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0
+            ),
+          ),
+          )
+
 
               ],
             ),
@@ -106,24 +177,108 @@ class FirstScreen  extends State<MyFirstScreen>{
 }
 
 
+//プロフィール
+class MyProfile extends StatefulWidget{
 
-/*Widget _titleArea(){
-  return Expanded(
-    child: Container(
-      margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      child: Text("商品名など"),
-    ),
-  );
+  @override
+  Profile createState() => new Profile();
 }
 
-Widget _reviewArea(){
-  return Expanded(
-    child: Container(
-      margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      child: Text("商品説明"),
+class Profile extends State<MyProfile> {
+  final _textEditingController = TextEditingController();
+  final _textEditingControllerB = TextEditingController();
+  int _maxLines;
+  int _maxLinesB;
+
+  @override
+  void initState(){
+    super.initState();
+    _textEditingController.addListener(_textEditListener);
+    _textEditingControllerB.addListener(_textEditListenerB);
+  }
+
+  @override
+  void dispose(){
+    _textEditingController.removeListener(_textEditListener);
+    _textEditingController.dispose();
+    _textEditingControllerB.removeListener(_textEditListenerB);
+    _textEditingControllerB.dispose();
+
+    super.dispose();
+  }
+
+
+
+
+  void _textEditListener(){
+    setState(() {
+      _maxLines = '\n'.allMatches(_textEditingController.text).length >= 0 ? 1 : null;
+    });
+  }
+
+  void _textEditListenerB(){
+    setState(() {
+      _maxLinesB = '\n'.allMatches(_textEditingControllerB.text).length >= 4 ? 5 : null;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('プロフィール設定'),
+        ),
+      body:Card(
+        elevation: 4.0,
+        child:  Row(
+          children: <Widget>[
+        Expanded(
+        child:
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(2.0),
+              child: new TextFormField(
+                maxLength: 15,
+                controller: _textEditingController,
+                decoration: const InputDecoration(
+                  hintText: 'ユーザーネーム',
+                ),
+                maxLines: _maxLines,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+              ),
+
+            ),
+            Padding(
+              padding: EdgeInsets.all(2.0),
+              child: new TextFormField(
+                maxLength: 50,
+                controller: _textEditingControllerB,
+                decoration: const InputDecoration(
+                  hintText: '自己紹介',
+                ),
+                maxLines: _maxLinesB,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+              ),
+
+            ),
+          ],
+
+        ),
+      ),
+      ]
     ),
-  );
-}*/
+
+    ),
+    );
+  }
+
+}
 
 
 
@@ -162,7 +317,7 @@ class Review extends State<MyReview> {
   }
 
   Future bottomSheetButton() async{
-    var image = await showModalBottomSheet<int> (
+    await showModalBottomSheet<int> (
       context: context,
       builder: (BuildContext context) {
         return Column(
@@ -184,7 +339,7 @@ class Review extends State<MyReview> {
       );
 
   }
-  
+
 
   void buttonPressed() {
     setState(() {
@@ -193,9 +348,9 @@ class Review extends State<MyReview> {
       );
     });
   }
-  
-  
-  @override 
+
+
+  @override
   void initState(){
     super.initState();
     _textEditingControllerItem.addListener(_textEditListenerItem);
@@ -541,26 +696,6 @@ class DetailPage extends State<MyDetailPage>{
   }
 
 
-/*  Widget _buildButtonColumn(IconData icon, String label){
-    final color = Theme.of(context).primaryColor;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(icon, color: color),
-        Container(
-          margin: const EdgeInsets.only(top: 8.0),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.w400,
-              color: color),
-            ),
-          ),
-      ],
-    );
-  }*/
 
   Widget _titleArea(){
     return Container(
@@ -604,7 +739,12 @@ class DetailPage extends State<MyDetailPage>{
     return Expanded(
       child: Container(
         margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-        child: Text("商品説明"),
+        child: Text('商品説明',
+            style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16.0
+        ),
+      ),
       ),
     );
   }
